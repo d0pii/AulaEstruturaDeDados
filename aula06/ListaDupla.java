@@ -14,7 +14,7 @@ public class ListaDupla<T>{
         this.ultimoNo = null;
     }
 
-    public void addInicio(){
+    public void addInicio(T dado){
         NoDuplo<T> novoNo = new NoDuplo<T>(dado);
         if(primeiroNo == null){
             primeiroNo = ultimoNo = novoNo;
