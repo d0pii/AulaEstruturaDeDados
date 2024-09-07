@@ -3,6 +3,7 @@ public class ListaDupla<T>{
     private String nomeLista;
     private NoDuplo<T> primeiroNo;
     private NoDuplo<T> ultimoNo;
+    private int tamanho;
 
     public ListaDupla(){
         this("Lista duplamente encadeada");
@@ -10,12 +11,13 @@ public class ListaDupla<T>{
 
     public ListaDupla(String nomeLista){
         this.nomeLista = nomeLista;
+        this.tamanho = 0;
         this.primeiroNo = null;
         this.ultimoNo = null;
     }
 
     public void addInicio(T dado){
-        NoDuplo<T> novoNo = new NoDuplo<T>(dado);
+        NoDuplo<T> novoNo = new NoDuplo<T>(dado, 0);
         if(primeiroNo == null){
             primeiroNo = ultimoNo = novoNo;
         }else{
@@ -23,10 +25,12 @@ public class ListaDupla<T>{
             primeiroNo.setAnteriorNo(novoNo);
             primeiroNo = novoNo;
         }
+        atualizaIndices();
+        tamanho++;
     }
 
     public void addFinal(T dado){
-        NoDuplo<T> novoNo = new NoDuplo<T>(dado);
+        NoDuplo<T> novoNo = new NoDuplo<T>(dado, tamanho);
         if(ultimoNo == null){
             primeiroNo = ultimoNo = novoNo;
         }else{
@@ -34,8 +38,50 @@ public class ListaDupla<T>{
             ultimoNo.setProximoNo(novoNo);
             ultimoNo = novoNo;
         }
+        tamanho++;
     }
 
+    public void removeInicio(){
+       if(primeiroNo == null ){
+            System.out.println("Lista vazia");
+
+        }else{
+            System.out.println("Dado: " + primeiroNo.getDado() + " removido da lista.");
+            primeiroNo = primeiroNo.getProximoNo();
+            if(primeiroNo != null){
+                primeiroNo.setAnteriorNo(null);
+            }else{
+                ultimoNo = null;
+            }
+            atualizaIndices();
+            tamanho--;
+        } 
+    }
+
+    public void removeFinal(){
+       if(ultimoNo == null ){
+            System.out.println("Lista vazia");
+        }else{
+            System.out.println("Dado: " + ultimoNo.getDado() + " removido da lista.");
+            ultimoNo = ultimoNo.getAnteriorNo();
+            if(ultimoNo != null){
+                ultimoNo.setProximoNo(null);
+            }else{
+                primeiroNo = null;
+            }
+            tamanho--;
+        } 
+    }
+
+    private void atualizaIndices(){
+        NoDuplo<T> atual = primeiroNo;
+        int indice = 0;
+        while (atual != null){
+            atual.setIndice(indice);
+            atual = atual.getProximoNo();
+            indice++;
+        }
+    }
     public void imprimeLista(){
         if(primeiroNo == null){
             System.out.println("Lista vazia");
